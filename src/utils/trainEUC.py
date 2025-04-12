@@ -25,7 +25,7 @@ def train1(args):
     start_epoch = 0
     best_acc1, best_pgd, best_fgsm = 0, 0, 0
     checkpoint = None
-    train_set,  val_set = get_datasets(args)#tinyimagenet数据集
+    train_set,  val_set = get_datasets(args)
     train_sampler = dd.DistributedSampler(train_set) if args.parallel else None
     train_loader = DataLoader(train_set,
                               batch_size=args.batch_size,
@@ -188,7 +188,7 @@ def SmoothLoss2(opt2, img,model,target):
     loss_ce = (F.cross_entropy(log_prob, torch.argmax(prob_natural, dim=1))+ 0.8 * EdAlign_loss(model, img, target)).mean()#正则
     return loss_ce    
 
-def PCC_Loss(opt2, img, model,target):  
+def EUC_Loss(opt2, img, model,target):  
     smoothing=0.1
     log_prob = F.log_softmax(opt2, dim=-1)  
     num_classes = log_prob.size(-1)  
@@ -196,7 +196,6 @@ def PCC_Loss(opt2, img, model,target):
         if target.dim() == 1:  
             target = F.one_hot(target, num_classes=num_classes).float()  
         smoothed_target = target * (1. - smoothing) + smoothing / num_classes     
-    # 计算标签平滑损失  
     loss = ((-smoothed_target * log_prob).sum(dim=-1) + 0.8 * EdAlign_loss(model, img, target)).mean()#正则
     return loss   
  
@@ -210,7 +209,7 @@ def EdAlign_loss(model, X, y):
     
     euclidean_dist_diff  = tc.sum((grad1_normed - grad2_normed) ** 2, dim=1)   
     euclidean_dist = tc.sqrt(euclidean_dist_diff)  
-    reg = euclidean_dist.mean()  # 计算欧几里得距离的平均值
+    reg = euclidean_dist.mean()  
     return reg
 
 import math
@@ -251,7 +250,7 @@ def _label_smoothing(label,factor):
 
 from torchvision import transforms 
 transform_to_224 = transforms.Compose([  
-    transforms.Resize(224),  # 调整图像大小为224x224  
+    transforms.Resize(224), 
     transforms.ToPILImage(),  
 ]) 
 
@@ -293,7 +292,7 @@ def update(loader, model, criterion, optimizer, epoch, args, swa_model):
         # opt2 = model(adv)
         # loss = criterion(opt2, tgt)
         opt2 = model(adv)
-        loss = PCC_Loss(opt2, img,model,tgt)
+        loss = EUC_Loss(opt2, img,model,tgt)
                 
         acc1, acc5 = accuracy(opt, tgt, topk=(1, 5))
         top1.update(acc1[0], batch_size)

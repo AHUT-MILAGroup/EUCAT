@@ -63,14 +63,13 @@ python src/train.py -a paresnet --depth 18 -d WHU
 python src/train.py -a wresnet --depth 34 -d NWPU
 
 
-# To train a Wide  PreAct ResNet18 on  RSSCN7 using PGD10 with PGD , run:
+# To train a PreActResNet18 on  RSSCN7 using PGD10 with PGD , run:
 python src/train.py -a paresnet --depth 18 -d RSSCN7
 
-# To train a Wide  PreAct ResNet18 on  WHU-RS19
+# To train a PreAct ResNet18 on  WHU-RS19
 python src/train.py -a wresnet --depth 34 -d WHU
 
-# To train a Wide ResNet34-10 on  RSSCN7 using PGD10 with SWA , run:
-
+# To train a WideResNet34-10 on  RSSCN7 using PGD10 with SWA , run:
 
 python src/train.py -a wresnet --depth 34 -d RSSCN7 --swa 0 0.001 1
 

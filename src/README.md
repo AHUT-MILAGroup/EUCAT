@@ -93,13 +93,13 @@ python src/adversary.py 0000 -v pgd -a AA
 ```
 where "0000" should be replaced the real identifier to be evaluated.
 
-
-### Citation
+## Citations
 ```
-@inproceedings{li2023data,
-title={Data augmentation alone can improve adversarial training},
-author={Lin Li and Michael W. Spratling},
-booktitle={The Eleventh International Conference on Learning Representations },
-year={2023},
-url={https://openreview.net/forum?id=y4uc4NtTWaq}
+@inproceedings{rahman2024g,
+  title={On Adversarial Robust Generalization of DNNs for Remote Sensing Image Classification},
+  author={Wei Xue, Yonghao Wang, Shaoquan Zhang,Xiao Zheng, and Ping Zhong},
+  booktitle={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},
+  pages={},
+  year={2025}
 }
+```
